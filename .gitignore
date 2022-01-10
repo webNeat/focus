@@ -1,0 +1,9 @@
+*.log
+.DS_Store
+node_modules
+.cache
+.parcel-cache
+dist
+*.code-workspace
+coverage
+tmp
