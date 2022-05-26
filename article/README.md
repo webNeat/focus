@@ -30,7 +30,7 @@ When I am working on a task, I often get interrupted by other tasks that should 
 
 # Setting up the project
 
-What I am trying to build here is a desktop application, but I want to use web technologies (at least for the UI). The popular tool to the that is [Electron](https://www.electronjs.org), but I started recently learning Rust and [Tauri](https://tauri.studio/) seems like a good tool to try. So I will using it with React for the frontend and Tailwind for styling.
+What I am trying to build here is a desktop application, but I want to use web technologies (at least for the UI). The popular tool to do that is [Electron](https://www.electronjs.org), but I started recently learning Rust and [Tauri](https://tauri.studio/) seems like a good tool to try. So I will be using it with React for the frontend and Tailwind for styling.
 
 I followed the instructions on [Tauri's prerequisites page](https://tauri.studio/v1/guides/getting-started/prerequisites) to setup Rust and Node on my system, then I run `yarn create tauri-app` to create the project. I named the project `focus` and chose the `create-vite` receipe for the UI and agreed to install `@tauri-apps/api`. Then chose the `react-ts` template of `create-vite`:
 
@@ -127,7 +127,7 @@ fn main() {
 }
 ```
 
-And then I modified the `App` component to call that function when `Enter` is pressed:
+Then I modified the `App` component to call that function when `Enter` is pressed:
 
 ```tsx
 function App() {
@@ -155,7 +155,7 @@ Now when typing some text and hiting `Enter`, the entered text is added to the `
 
 # Customizing the tasks file path
 
-Note that this file is created in the root of the project while the path in the Rust code is `../tasks.txt`, this is because the app is run inside the `src-tauri` directory, so any relative path will be relative the that directory. It will be better to use an absolute path and let the user define it. The easiest way I could think of to define it is via an environment variable, let's call it `FOCUS_TASKS_PATH`. 
+Note that this file is created in the root of the project while the path in the Rust code is `../tasks.txt`, this is because the app is executed inside the `src-tauri` directory, so any relative path will be relative to that directory. It will be better to use an absolute path and let the user define it. The easiest way I could think of to define it is via an environment variable, let's call it `FOCUS_TASKS_PATH`. 
 
 So I added this variable to my `.zshrc` then updated the Rust code:
 
@@ -253,7 +253,7 @@ src-tauri/target/release/bundle/
   appimage/focus_0.1.0_amd64.AppImage
 ```
 
-Since the AppImage is easier to use (to installation needed), I just moved it to my `bin` directory and named it `focus`:
+Since the AppImage is easier to use (no installation needed), I just moved it to my `bin` directory and named it `focus`:
 
 ```
 sudo mv src-tauri/target/release/bundle/appimage/focus_0.1.0_amd64.AppImage /usr/bin/focus
