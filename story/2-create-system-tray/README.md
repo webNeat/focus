@@ -1,11 +1,11 @@
 Hello 👋,
 
-In [the previous article](), I shared how I started working on a small productivity tool called `focus`. The idea of the tool is simple:
+In the previous article, I shared how I started working on a small productivity tool called `focus`. The idea of the tool is simple:
 
 - I hit a keyboard shortcut anywhere on my computer.
 - A popup shows on the center of the screen containing a text input.
 - I type some idea/task I want to remember later, then I hit `Enter`.
-- The popup disapears.
+- The popup disappears.
 - All ideas I type are added to a text file. The path of that file is set by the environment variable `FOCUS_TASKS_PATH`.
 
 Last time, I had a working version, but there is one problem: When I hit the keyboard shortcut, the popup takes about 2 seconds to open and render correctly. Let's make it "pop up" faster.
@@ -18,24 +18,24 @@ Last time, I had a working version, but there is one problem: When I hit the key
 - [Hiding the window from the frontend](#hiding-the-window-from-the-frontend)
 - [Show the window with a global shortcut](#show-the-window-with-a-global-shortcut)
 
-# Why is it slow? it's just a text input right?
+# Why is it slow? it's just a text input, right?
 
 From my understanding of [Tauri's process model](https://tauri.studio/v1/guides/architecture/process-model), when I hit the shortcut, the following happens:
 
 - A core process is created. This is the process that runs the Rust code.
 - A webview process is created by the core process. This is the once running the frontend code.
 
-You can think of a webview like a mini browser that has everything needed to show a web page and handle interactions on it (parsing HTML, applying CSS, executing Javascript, ... ). Plus it can communicate with the core process to run Rust code. 
+You can think of a webview as a mini-browser that has everything needed to show a web page and handle interactions on it (parsing HTML, applying CSS, executing Javascript, ... ). Plus it can communicate with the core process to run Rust code. 
 
 This explains why it takes time the start it (like it takes time to open Chrome or VSCode).
 
-# How to make it open faster ?
+# How to make it open faster?
 
-My idea is to open to the app once and keep it running in the background, so that when the shortcut is hit, we only show the window which should be faster then creating it from scratch. One way to do that is to add the app to the system tray (the section that has the small icons on the tasksbar. You know the one that you close an app but still find its icon there telling you "I am still alive!").
+My idea is to open the app once and keep it running in the background so that when the shortcut is hit, we only show the window which should be faster than creating it from scratch. One way to do that is to add the app to the system tray (the section that has the small icons on the taskbar. You know the one that you close an app but still find its icon there telling you "I am still alive!").
 
 # Adding the application to the system tray
 
-By following [the documentation](https://tauri.studio/v1/guides/features/system-tray), first we need to specify the icon of our app on the system tray using the `tauri.conf.json` file, let's use the already existing Tauri icon (I may need to design a custom icon for this application, but not a priority for now).
+By following [the documentation](https://tauri.studio/v1/guides/features/system-tray), first, we need to specify the icon of our app on the system tray using the `tauri.conf.json` file, let's use the already existing Tauri icon (I may need to design a custom icon for this application, but not a priority for now).
 
 ```json
 {
@@ -48,7 +48,7 @@ By following [the documentation](https://tauri.studio/v1/guides/features/system-
 }
 ```
 
-Next I modified the dependencies section of the `Cargo.toml` file to include the feature `gtk-tray` which is needed on my linux distribution.
+Next, I modified the dependencies section of the `Cargo.toml` file to include the feature `gtk-tray` which is needed on my Linux distribution.
 
 ```
 tauri = { version = "1.0.0-rc.11", features = ["api-all", "gtk-tray", "system-tray"] }
@@ -77,10 +77,10 @@ fn main() {
 
 The `make_tray` function creates the system tray with a menu containing two items: `Hide` and `Quit`.
 
-- Initialy the application window is shown; I want to be able to hide it by clicking the `Hide` menu item. Then its text should become `Show` and clicking it should show the window again.
+- Initially, the application window is shown; I want to be able to hide it by clicking the `Hide` menu item. Then its text should become `Show` and clicking it should show the window again.
 - Clicking on the `Quit` menu item should close the application.
 
-If I run the application now, I see the Tauri icon on the system tray. Clicking on it shows the menu with `Hide` and `Quit` items, but clicking them does nothing. In order to run some code when the items are clicked we should add an event handler using the `on_system_tray_event` method:
+If I run the application now, I see the Tauri icon on the system tray. Clicking on it shows the menu with `Hide` and `Quit` items, but clicking them does nothing. To run some code when the items are clicked we should add an event handler using the `on_system_tray_event` method:
 
 ```rs
 fn main() {
@@ -146,7 +146,7 @@ Now when I type something and hit `Enter`, the window is hidden but there are tw
 1. The menu item still shows `Hide` when I click the icon on the system tray.
 2. When the window is shown again, the text I typed last time is still there.
 
-Let's start by fixing the second problem which is easier. All we have to do is to set the `content` state to empty string after invoking the `add_task` command.
+Let's start by fixing the second problem which is easier. All we have to do is to set the `content` state to an empty string after invoking the `add_task` command.
 
 ```ts
 function App() {
@@ -198,7 +198,7 @@ function App() {
 }
 ```
 
-Note that the `hide_window` command takes an argument `app` of type `AppHandle`, but when don't pass any argument when calling it from Javascript. Tauri will inject that argument automatically based on its type.
+Note that the `hide_window` command takes an argument `app` of type `AppHandle`, but we don't pass any argument when calling it from Javascript. Tauri will inject that argument automatically based on its type.
 
 # Show the window with a global shortcut
 
@@ -229,6 +229,8 @@ register('Alt+Enter', () => {
 })
 ```
 
-Now the string `Alt+Enter pressed!` should be logged into the console every time I press `Alt+Enter`. But it doesn't work and I didn't know why ... until I found this open issue on the `tao` repository: https://github.com/tauri-apps/tao/issues/307 [Tao](https://github.com/tauri-apps/tao) is the Rust library Tauri uses to create and manage windows. And according to that issue, global shortcuts don't work properly on Linux, that's why it's not working for me!
+Now the string `Alt+Enter pressed!` should be logged into the console every time I press `Alt+Enter`. But it doesn't work and I didn't know why ... until I found this open issue on the `tao` repository: https://github.com/tauri-apps/tao/issues/307
+
+[Tao](https://github.com/tauri-apps/tao) is the Rust library Tauri uses to create and manage windows. And according to that issue, global shortcuts don't work properly on Linux, that's why it's not working for me! 
 
 So if I want to continue working on this application, I need to implement a workaround for shortcuts to work on Ubuntu. That's what I will be doing in the next blog post. See ya!
