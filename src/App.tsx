@@ -1,13 +1,14 @@
 import React from 'react'
 import { invoke } from '@tauri-apps/api/tauri'
-import { process } from '@tauri-apps/api'
+import { appWindow } from '@tauri-apps/api/window'
 
 function App() {
   const [content, setContent] = React.useState('')
   const handleKeyDown = async (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       await invoke('add_task', { content })
-      process.exit()
+      setContent('')
+      await invoke('hide_window')
     }
   }
   return (

@@ -34,7 +34,7 @@ What I am trying to build here is a desktop application, but I want to use web t
 
 I followed the instructions on [Tauri's prerequisites page](https://tauri.studio/v1/guides/getting-started/prerequisites) to setup Rust and Node on my system, then I run `yarn create tauri-app` to create the project. I named the project `focus` and chose the `create-vite` receipe for the UI and agreed to install `@tauri-apps/api`. Then chose the `react-ts` template of `create-vite`:
 
-![Create Tauri project with Vite react-ts template](https://raw.githubusercontent.com/webNeat/focus/main/article/1-create-project.gif)
+![Create Tauri project with Vite react-ts template](https://raw.githubusercontent.com/webNeat/focus/main/story/1-creating-a-popup/1-create-project.gif)
 
 Tauri created the project and installed the dependencies. Let's take a look at the files structure:
 
@@ -92,7 +92,7 @@ function App() {
 }
 ```
 
-![Add state for the input content](https://raw.githubusercontent.com/webNeat/focus/main/article/2-add-state.gif)
+![Add state for the input content](https://raw.githubusercontent.com/webNeat/focus/main/story/1-creating-a-popup/2-add-state.gif)
 
 # Calling Rust functions from the frontend
 
@@ -151,7 +151,7 @@ function App() {
 
 Now when typing some text and hiting `Enter`, the entered text is added to the `tasks.txt` file.
 
-![Append content to file](https://raw.githubusercontent.com/webNeat/focus/main/article/3-append-to-file.gif)
+![Append content to file](https://raw.githubusercontent.com/webNeat/focus/main/story/1-creating-a-popup/3-append-to-file.gif)
 
 # Customizing the tasks file path
 
@@ -206,7 +206,7 @@ I replaced it with
 
 The result looks good :)
 
-![The application styled as a popup](https://raw.githubusercontent.com/webNeat/focus/main/article/4-popup.gif)
+![The application styled as a popup](https://raw.githubusercontent.com/webNeat/focus/main/story/1-creating-a-popup/4-popup.gif)
 
 # Closing the application after adding the task
 
